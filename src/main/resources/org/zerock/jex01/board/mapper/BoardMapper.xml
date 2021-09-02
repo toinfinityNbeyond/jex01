@@ -3,19 +3,36 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.zerock.jex01.board.mapper.BoardMapper"><!--namespace : 패키지명이랑 맞춰주기  namespace + id = 풀네임-->
+<mapper namespace="org.zerock.jex01.board.mapper.BoardMapper">
 
     <insert id="insert">
-        insert tbl_board (title,content,writer)
-        values (#{title},#{content},#{writer})
+        insert into tbl_board (title,content,writer)
+        values(#{title},#{content},#{writer})
 
-        <selectKey order="AFTER" resultType="long" keyProperty="bno"><!--keyProperty : 키값을 어디에 둘 것인-->
+        <selectKey order="AFTER" resultType="long" keyProperty="bno">
             select last_insert_id()
         </selectKey>
     </insert>
 
     <select id="getList" resultType="org.zerock.jex01.board.domain.Board">
-        select * from tbl_board order by bno desc limit 0,100
+        select * from tbl_board
+        <foreach collection="arr" item="item" separator=" OR " open="WHERE (" close=")"> <!--separator 루프 돌 때 사이에 끼워주는 것.-->
+            <if test="item == 'T'.toString()">  <!--title-->
+                title like concat('%', #{keyword}, '%')
+            </if>
+            <if test="item == 'C'.toString()">  <!--content-->
+                content like concat('%', #{keyword}, '%')
+            </if>
+            <if test="item == 'W'.toString()">  <!--writer-->
+                writer like concat('%', #{keyword}, '%')
+            </if>
+        </foreach>
+
+        order by bno desc limit #{skip},#{size}   <!--계속 해서 바뀐 값을 넣기위해 #{} 으로 감싸줌-->
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(bno) from tbl_board
     </select>
 
     <select id="select" resultType="org.zerock.jex01.board.domain.Board">
@@ -27,7 +44,7 @@
     </delete>
 
     <update id="update">
-        update tbl_board set title = #{title}, content = #{content}, modDate = now()
+        update tbl_board set title = #{title}, content =#{content}, modDate = now()
         where bno = #{bno}
     </update>
 

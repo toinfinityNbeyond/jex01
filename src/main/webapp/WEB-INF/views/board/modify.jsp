@@ -34,30 +34,34 @@
                         </div>
                         <!-- /.card-header -->
                         <form id="form1">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="exampleInputEmail0">BNO</label>
-                                <input type="text" name="bno" class="form-control" id="exampleInputEmail0" placeholder="Enter title" value="<c:out value="${boardDTO.bno}"></c:out> " readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">TITLE</label>
-                                <input type="text" name="title" class="form-control" id="exampleInputEmail1" placeholder="Enter title" value="<c:out value="${boardDTO.title}"></c:out> ">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail2">Writer</label>
-                                <input type="text" name="writer" class="form-control" id="exampleInputEmail2" placeholder="Enter writer" value="<c:out value="${boardDTO.writer}"></c:out>" readonly>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <!-- textarea -->
-                                    <div class="form-group">
-                                        <label>Textarea</label>
-                                        <textarea name="content" class="form-control" rows="3" ><c:out value="${boardDTO.content}"></c:out>
+                            <input type="hidden" name="page" value="${pageRequestDTO.page}">
+                            <input type="hidden" name="size" value="${pageRequestDTO.size}">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail10">BNO</label>
+                                    <input type="text" name="bno" class="form-control" id="exampleInputEmail10" value="<c:out value="${boardDTO.bno}"></c:out>" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Title</label>
+                                    <input type="text" name="title" class="form-control" id="exampleInputEmail1" value="<c:out value="${boardDTO.title}"></c:out>" >
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail2">Writer</label>
+                                    <input type="text" name="writer" class="form-control" id="exampleInputEmail2" value="<c:out value="${boardDTO.writer}"></c:out>" readonly>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <!-- textarea -->
+                                        <div class="form-group">
+                                            <label>Textarea</label>
+                                            <textarea name="content" class="form-control" rows="3" ><c:out value="${boardDTO.content}"></c:out>
                                         </textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <!-- /.card-body -->
+
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary btnList">목록</button>
                                 <button type="submit" class="btn btn-warning btnMod">수정</button>
@@ -65,49 +69,53 @@
                             </div>
                         </form>
                     </div>
-                    <!— /.card —>
+
+                    <!-- /.card -->
                 </div>
             </div>
         </div>
     </section>
 </div>
+<!-- /.content-wrapper -->
+
+<form id="actionForm" action="/board/list" method="get">
+    <input type="hidden" name="page" value="${pageRequestDTO.page}">
+    <input type="hidden" name="size" value="${pageRequestDTO.size}">
+</form>
+
+
 <%@include file="../includes/footer.jsp"%>
 
 <script>
-   const form =  document.querySelector("#form1")
+    const form = document.querySelector("#form1")
+    const actionForm = document.querySelector("#actionForm")
 
-    document.querySelector(".btnList").addEventListener("click",(e)=>{
-        e.preventDefault() //원래 기능을 막는다.
-        e.stopPropagation() //이벤트 전파를 막는다.
+    document.querySelector(".btnList").addEventListener("click", (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        actionForm.submit();
+    },false);
 
-        window.location = "/board/list"
-        // form.setAttribute("action", "/board/list")
-        // form.setAttribute("method","get")
-        // form.submit()
+    document.querySelector(".btnDel").addEventListener("click", (e) => {
+        e.preventDefault()
+        e.stopPropagation()
 
-    },false)
+        form.setAttribute("action","/board/remove")
+        form.setAttribute("method","post")
+        form.submit()
 
-   document.querySelector(".btnDel").addEventListener("click",(e)=>{
-       e.preventDefault()
-       e.stopPropagation()
+    },false);
 
-       // window.location = "/board/list"
-       form.setAttribute("action", "/board/remove")
-       form.setAttribute("method","post")
-       form.submit()
+    document.querySelector(".btnMod").addEventListener("click", (e) => {
+        e.preventDefault()
+        e.stopPropagation()
 
-   },false)
+        form.setAttribute("action","/board/modify")
+        form.setAttribute("method","post")
+        form.submit()
 
-   document.querySelector(".btnMod").addEventListener("click",(e)=>{
-       e.preventDefault()
-       e.stopPropagation()
+    },false);
 
-       // window.location = "/board/list"
-       form.setAttribute("action", "/board/modify")
-       form.setAttribute("method","post")
-       form.submit()
-
-   },false)  //캡쳐링 ㄴㄴ
 
 </script>
 

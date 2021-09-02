@@ -33,18 +33,19 @@
                             <h3 class="card-title">Board Read</h3>
                         </div>
                         <!-- /.card-header -->
+
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="exampleInputEmail0">BNO</label>
-                                <input type="text" name="bno" class="form-control" id="exampleInputEmail0" placeholder="Enter title" value="<c:out value="${boardDTO.bno}"></c:out> " readonly>
+                                <label for="exampleInputEmail10">BNO</label>
+                                <input type="text" name="bno" class="form-control" id="exampleInputEmail10" value="<c:out value="${boardDTO.bno}"></c:out>" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">TITLE</label>
-                                <input type="text" name="title" class="form-control" id="exampleInputEmail1" placeholder="Enter title" value="<c:out value="${boardDTO.title}"></c:out> " readonly>
+                                <label for="exampleInputEmail1">Title</label>
+                                <input type="text" name="title" class="form-control" id="exampleInputEmail1" value="<c:out value="${boardDTO.title}"></c:out>" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail2">Writer</label>
-                                <input type="text" name="writer" class="form-control" id="exampleInputEmail2" placeholder="Enter writer" value="<c:out value="${boardDTO.writer}"></c:out>" readonly>
+                                <input type="text" name="writer" class="form-control" id="exampleInputEmail2" value="<c:out value="${boardDTO.writer}"></c:out>" readonly>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
@@ -57,14 +58,44 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer float-right">
+                            <button type="button" class="btn btn-default btnList">LIST</button>
+                            <button type="button" class="btn btn-info btnMod">MODIFY</button>
+                        </div>
+
                     </div>
-                    <!— /.card —>
+                    <!-- /.card -->
                 </div>
             </div>
         </div>
     </section>
 </div>
+<!-- /.content-wrapper -->
+
+<form id="actionForm" action="/board/list" method="get">
+    <input type="hidden" name="page" value="${pageRequestDTO.page}">  <!--값을 준 해당 페이지로 돌아가기 위해-->
+    <input type="hidden" name="size" value="${pageRequestDTO.size}">
+</form>
+
 <%@include file="../includes/footer.jsp"%>
+
+<script>
+    const actionFrom = document.querySelector("#actionForm")
+
+    document.querySelector(".btnList").addEventListener("click",()=> {actionFrom.submit()}, false)
+
+    document.querySelector(".btnMod").addEventListener("click",()=> {
+
+        const bno = '${boardDTO.bno}'
+        actionForm.setAttribute("action","/board/modify")
+        actionForm.innerHTML +=`<input type='hidden' name='bno' value='\${bno}'>`
+        actionFrom.submit()
+    }, false)
+
+</script>
+
 
 </body>
 </html>

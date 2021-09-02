@@ -11,6 +11,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.jex01.board.dto.BoardDTO;
 import org.zerock.jex01.board.service.BoardService;
 import org.zerock.jex01.board.service.TimeService;
+import org.zerock.jex01.common.dto.PageResponseDTO;
+import org.zerock.jex01.common.dto.PageMaker;
+import org.zerock.jex01.common.dto.PageRequestDTO;
 
 @Controller
 @RequestMapping("/board/*") //getMapping + postMapping
@@ -51,16 +54,33 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public void getList(Model model){ //commonExceptionHandler가 예외처리해줘서 따로 신경 X
+    public void getList(PageRequestDTO pageRequestDTO, Model model){ //commonExceptionHandler가 예외처리해줘서 따로 신경 X , 페이지리퀘스트 자동으로 파라미터에 값 던진다.
         //jsp로 담아서 보내줘야 한다. -> model사용(담아서 사용할 떄는 model)
-        log.info("c         getList.........................................");//c : controller
-        model.addAttribute("dtoList", boardService.getDTOList()); //boardList.jsp를 찾아감
-    }
+        log.info("c         getList........................................." + pageRequestDTO);//c : controller
+
+        PageResponseDTO<BoardDTO> responseDTO = boardService.getDTOList(pageRequestDTO);
+
+        //기본형의 경우 model 을 사용하지 않아도 자동으로 전달됨.
+        model.addAttribute("dtoList", responseDTO.getDtoList()); //boardList.jsp를 찾아감
+
+        int total = responseDTO.getCount();
+        int page = pageRequestDTO.getPage();
+        int size = pageRequestDTO.getSize();   // 세개 있으면 페이지 메이커를 만들 수 있다
+
+        model.addAttribute("pageMaker", new PageMaker(page,size,total));   // 필요한거 전달
+
+
+        //model.addAttribute("pageMaker", new PageMaker(pageRequestDTO.getPage();,size,total));  이런식으로 줄이는것도 가능
+    }  // 페이지와 사이즈를 파라미터로 던진다.
 
     @GetMapping(value = {"/read","/modify"})
-    public void read(Long bno, Model model) {
-        log.info("c  read" +  bno );
-        model.addAttribute("boardDTO", boardService.read(bno));
+    public void read(Long bno, PageRequestDTO pageRequestDTO,Model model) {  //자동으로 모델에 전달. PageRequestDTO를 파라미터로 사용하지 않으면 개별 값을 다 파라미터로 선언해야함;;
+        log.info("c   read" +  bno );
+        log.info("c   read" + pageRequestDTO);
+
+
+        model.addAttribute("boardDTO", boardService.read(bno)); // model 파라미터 자체가 다른 값 을 감싸서 전달. 파라미터 자체가 값을 가공해서 전달.
+
 
     }
 
@@ -78,15 +98,18 @@ public class BoardController {
     }
 
     @PostMapping("/modify")
-    public String modify(BoardDTO boardDTO,RedirectAttributes redirectAttributes) {
+    public String modify(BoardDTO boardDTO,PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
 
         log.info("c           modify : " + boardDTO);
         if (boardService.modify(boardDTO)) {
-            redirectAttributes.addFlashAttribute("result", "modified");
+            redirectAttributes.addFlashAttribute("result", "modified"); //모달 창으로 보여주기 위해서.redirectAttributes 사용해서 일회성으로 함. 다시 돌아가면 모달창이 뜨면 안되기 때문에.
 
         }
-        redirectAttributes.addAttribute("bno", boardDTO.getBno());
-        return "redirect:/board/read";
+        redirectAttributes.addAttribute("bno", boardDTO.getBno()); // 몇 번이 수정됐는지 보여 주기 위해bno 값 보냄. redirectAttributes 객체를 전달해주는 역할
+        // 수정하고 목록으로 돌아갈 때 원래 보던 페이지로 돌아감
+        redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
+        redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
+        return "redirect:/board/read"; // 수정 완료하면 read로 돌아감
     }
 
 }
