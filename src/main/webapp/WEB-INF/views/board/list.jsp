@@ -55,11 +55,36 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+
+                            <form action="/board/list" method="get">
+                                <input type="hidden" name="page" value="1"> <!--검색 시 결과가 1페이지부터 나오게 하려고 value값을 1 로 줬다.-->
+                                <input type="hidden" name="size" value="${pageMaker.size}">
+                            <div class="col-sm-3">
+                                <!-- select -->
+                                <div class="form-group">
+                                    <label>Search</label>
+                                    <select name="type" class="custom-select">
+                                        <option value="">-------</option>
+                                        <option value="T" ${pageRequestDTO.type == "T"?"selected" : ""}>제목</option>
+                                        <option value="TC" ${pageRequestDTO.type == "TC"?"selected" : ""}>제목내용</option>
+                                        <option value="C" ${pageRequestDTO.type == "C"?"selected" : ""}>내용</option>
+                                        <option value="TCW" ${pageRequestDTO.type == "TCW"?"selected" : ""}>제목내용작성자</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" name="keyword" value="${pageRequestDTO.keyword}">
+                                    <span class="input-group-append"> <button type="submit" class="btn btn-info btn-flat">Go!</button></span>
+                                </div>
+                            </div>
+                            </form>  <!--버튼이 폼안에 있어야 작동을 해서 폼으로 감싸줬다.-->
+
                         </div>
                         <!-- /.card-body -->
+
                         <div class="card-footer clearfix">
                             <ul class="pagination pagination-sm m-0 float-right">
-
                                 <c:if test="${pageMaker.prev}">
                                     <li class="page-item"><a class="page-link" href="javascript:movePage(${pageMaker.start -1})"> << </a></li>
                                 </c:if>
@@ -114,6 +139,12 @@
 
     <input type="hidden" name="page" value="${pageMaker.page}">
     <input type="hidden" name="size" value="${pageMaker.size}">
+
+    <c:if test="${pageRequestDTO.type != null}"> <!--검색 조건 있을 때만 URL에 나오게-->
+    <input type="hidden" name="type" value= "${pageRequestDTO.type}">
+    <input type="hidden" name="keyword" value= "${pageRequestDTO.keyword}"> <!--검색 조건과 키워드가 유지를 해주려고 사용-->
+    </c:if>
+
 </form>
 
 <%@include file="../includes/footer.jsp"%>

@@ -77,6 +77,11 @@
 <form id="actionForm" action="/board/list" method="get">
     <input type="hidden" name="page" value="${pageRequestDTO.page}">  <!--값을 준 해당 페이지로 돌아가기 위해-->
     <input type="hidden" name="size" value="${pageRequestDTO.size}">
+
+    <c:if test="${pageRequestDTO.type != null}">
+        <input type="hidden" name="type" value= "${pageRequestDTO.type}">
+        <input type="hidden" name="keyword" value= "${pageRequestDTO.keyword}">
+    </c:if>
 </form>
 
 <%@include file="../includes/footer.jsp"%>
@@ -93,6 +98,40 @@
         actionForm.innerHTML +=`<input type='hidden' name='bno' value='\${bno}'>`
         actionFrom.submit()
     }, false)
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!--axios 를 사용하기 위함-->
+<script src="/resources/js/reply.js"></script>  <!--스크립트 단위로 읽고 로딩을 하고 해석. 실무에서는 이렇게 안씀-> 우리 수준....-->
+<!--스크립트라고 하나에 다 묶으면 안됨-->
+
+<script>
+
+    function after (result) { // 배열을 받아서 사용하는 예제 //reply.jsp 에 선언한 arr 이 result 가 된다. 콜백 방식
+        //
+        //이름만 준다.
+        // 값을 주는 이름이랑 받는 이름이랑 상관이 없다.
+       // fn은 read.jsp의 function after가 들어감
+        console.log("after......")
+        console.log("result" , result) //.js 에서 fn(arr)으로 받아온 결과를 확인한다.
+    }
+
+    //const doB() = function (arr) -> doB(after(result)) = function(arr) -> result = arr
+
+
+
+    //doA().then(result => console.log(result))  //엑시오스를 겟으로 보냈는데 언제올지 모르고 약속만 해줌. 약속이 되면 then옴
+    //then 은 비동기에서 사용 ㄴ 돌아오면 이걸 실행해달라
+
+    // doB(after)   //after괄호가 없으면 객체 . after() 괄호가 있으면 실행하는 결과
+
+    //const reply = {bno:230, replyer:'user00', reply: '2222222233333330000'}  // 객체 리터럴. 임의로 값을 줘서 확인하련ㄴ 것
+
+    //doC(reply).then(result => console.log(result)) //data 가져온 것 확인했으니 then 써서 리턴 값 잘 갖고 오는지 확인
+
+    //doD(112).then(result => console.log(result)) //댓글 번호 추가
+
+    const reply = {rno:112, reply:"Update reply text...."} //객체 전달 , 임의의 댓글
+    doE(reply).then(result => console.log(result)) // 수정 완료된 결과를 보여줌
 
 </script>
 

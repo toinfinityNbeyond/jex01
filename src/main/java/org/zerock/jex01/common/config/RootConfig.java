@@ -29,17 +29,38 @@ public class RootConfig {
     @Bean //db연결
     //(destroyMethod = "close") : 커넥션 풀을 종료하는 것으로 안전하게 하려면 하는게 좋음
     //싱글톤이라 한 번밖에 로딩안함. (예전에 쓰던 enum같은 것)
+
     public DataSource dataSource(){
-        HikariConfig config = new HikariConfig(); // hikariCP 사용
-        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/springdb");
+        HikariConfig config = new HikariConfig();
+        //config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+
+        config.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
+
+        //config.setJdbcUrl("jdbc:mysql://localhost:3306/springdb");
+        config.setJdbcUrl("jdbc:log4jdbc:mysql://localhost:3306/springdb");
         config.setUsername("springuser");
         config.setPassword("springuser");
-
         HikariDataSource dataSource = new HikariDataSource(config);
-
         return dataSource;
     }
+//    public DataSource dataSource(){
+//
+//
+//        HikariConfig config = new HikariConfig(); // hikariCP 사용
+//
+//
+//        config.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
+//        config.setJdbcUrl("jdbc:log4jdbc:mysql://localhost:3306/springdb");
+//        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//
+////        config.setJdbcUrl("jdbc:mysql://localhost:3306/springdb");
+//        config.setUsername("springuser");
+//        config.setPassword("springuser");
+//
+//        HikariDataSource dataSource = new HikariDataSource(config);
+//
+//        return dataSource;
+//    }
 
     // 소스코드가 없어서 직접사용을 못하고 @Bean을 이용해서 객체를 생성 / 예전에 xml로 설정했던 것을 메서드로 만들고 @Bean을 걸어서 객체로 생성해줌
     @Bean(name = "names")

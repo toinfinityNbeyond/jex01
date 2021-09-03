@@ -109,6 +109,12 @@ public class BoardController {
         // 수정하고 목록으로 돌아갈 때 원래 보던 페이지로 돌아감
         redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
         redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
+
+        if(pageRequestDTO.getType() != null){
+            redirectAttributes.addAttribute("type", pageRequestDTO.getType());
+            redirectAttributes.addAttribute("keyword", pageRequestDTO.getKeyword());
+        } //MODIFY 는 post의 방식의 검색처리
+
         return "redirect:/board/read"; // 수정 완료하면 read로 돌아감
     }
 

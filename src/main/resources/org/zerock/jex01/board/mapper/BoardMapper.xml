@@ -5,17 +5,8 @@
 
 <mapper namespace="org.zerock.jex01.board.mapper.BoardMapper">
 
-    <insert id="insert">
-        insert into tbl_board (title,content,writer)
-        values(#{title},#{content},#{writer})
-
-        <selectKey order="AFTER" resultType="long" keyProperty="bno">
-            select last_insert_id()
-        </selectKey>
-    </insert>
-
-    <select id="getList" resultType="org.zerock.jex01.board.domain.Board">
-        select * from tbl_board
+    <sql id="search">
+        <if test="type != null">
         <foreach collection="arr" item="item" separator=" OR " open="WHERE (" close=")"> <!--separator 루프 돌 때 사이에 끼워주는 것.-->
             <if test="item == 'T'.toString()">  <!--title-->
                 title like concat('%', #{keyword}, '%')
@@ -27,12 +18,32 @@
                 writer like concat('%', #{keyword}, '%')
             </if>
         </foreach>
+        </if>
+    </sql>   <!--sql의 조각-->
+
+
+    <insert id="insert">
+        insert into tbl_board (title,content,writer)
+        values(#{title},#{content},#{writer})
+
+        <selectKey order="AFTER" resultType="long" keyProperty="bno">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <select id="getList" resultType="org.zerock.jex01.board.domain.Board">
+        select * from tbl_board
+
+        <include refid="search"></include>
 
         order by bno desc limit #{skip},#{size}   <!--계속 해서 바뀐 값을 넣기위해 #{} 으로 감싸줌-->
     </select>
 
     <select id="getCount" resultType="int">
         select count(bno) from tbl_board
+
+        <include refid="search"></include>
+
     </select>
 
     <select id="select" resultType="org.zerock.jex01.board.domain.Board">
