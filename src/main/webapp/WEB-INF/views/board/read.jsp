@@ -138,3 +138,27 @@
 
 </body>
 </html>
+
+
+<%--<script>--%>
+
+<%--    function after(result){--%>
+<%--        console.log("after………………")--%>
+<%--        console.log("result",result) // .js에서 fn(arr)으로 받아온 결과를 확인한다.--%>
+<%--    }--%>
+
+<%--    // console.log(doA()) //doA()호출했으니까 read.jsp에 있는 이게 먼저 출력하고 -> promise만 먼저 반환해줌 (thread.sleep을 찍어놔서 나중에 반환된 값이 나중에 찍힘)--%>
+<%--    // doA().then(result => console.log(result)) // 제대로 결과값이 나오려면 결국 Then을 사용해야 한다.--%>
+
+<%--    // doB(after) //위의 after함수를 객체로 받아서 (괄호없이) 파라미터로 전달--%>
+
+<%--    // const reply = {bno:201, replyer:'user00', reply:'12314839471897'}--%>
+<%--    // doC(reply).then(result => console.log(result))--%>
+
+<%--    // doD(112).then(result => console.log(result))--%>
+
+<%--    const reply = {rno:112, reply:"Update reply text………"} // 댓글 112번에 입력할 내용--%>
+<%--    doE(reply).then(result => console.log(result))//위에 입력한 reply 호출--%>
+
+
+<%--</script>--%>
