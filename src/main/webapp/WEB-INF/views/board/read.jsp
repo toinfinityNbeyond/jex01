@@ -106,7 +106,7 @@
 
 <script>
 
-    function after (result) { // 배열을 받아서 사용하는 예제 //reply.jsp 에 선언한 arr 이 result 가 된다. 콜백 방식
+    function after (result) { // 배열을 받아서 사용하는 예제 //reply.js(/resources/js) 에 선언한 arr 이 result 가 된다. 콜백 방식
         //
         //이름만 준다.
         // 값을 주는 이름이랑 받는 이름이랑 상관이 없다.
