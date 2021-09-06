@@ -73,7 +73,7 @@ public class BoardController {
         //model.addAttribute("pageMaker", new PageMaker(pageRequestDTO.getPage();,size,total));  이런식으로 줄이는것도 가능
     }  // 페이지와 사이즈를 파라미터로 던진다.
 
-    @GetMapping(value = {"/read","/modify"})
+    @GetMapping(value = {"/read","/modify", "/read2"})
     public void read(Long bno, PageRequestDTO pageRequestDTO,Model model) {  //자동으로 모델에 전달. PageRequestDTO를 파라미터로 사용하지 않으면 개별 값을 다 파라미터로 선언해야함;;
         log.info("c   read" +  bno );
         log.info("c   read" + pageRequestDTO);

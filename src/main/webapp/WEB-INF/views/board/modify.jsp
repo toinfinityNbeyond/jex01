@@ -86,6 +86,7 @@
 </div>
 <!-- /.content-wrapper -->
 
+
 <form id="actionForm" action="/board/list" method="get">
     <input type="hidden" name="page" value="${pageRequestDTO.page}">
     <input type="hidden" name="size" value="${pageRequestDTO.size}">
@@ -97,6 +98,7 @@
 
 
 </form>
+
 
 
 <%@include file="../includes/footer.jsp"%>
@@ -121,7 +123,11 @@
 
     },false);
 
+
+
+
     document.querySelector(".btnMod").addEventListener("click", (e) => {
+        //dom 관련
         e.preventDefault()
         e.stopPropagation()
 

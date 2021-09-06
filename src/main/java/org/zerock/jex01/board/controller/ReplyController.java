@@ -1,16 +1,25 @@
 package org.zerock.jex01.board.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.jex01.board.dto.ReplyDTO;
+import org.zerock.jex01.board.service.ReplyService;
+
+import java.util.List;
 
 @Log4j2
+//@ResponseBody
 @RestController    // 리턴하는 값이 모두다 json 처리가 된다. 기본자료형이나 문자열은 텍스트로 받아들인다. 객체타입은 전부 json 으로 반환
 @RequestMapping("/replies")
+@RequiredArgsConstructor
 public class ReplyController { // 댓글은 보드에 종속되어서 보드에 만듦.
+
+    private final ReplyService replyService;
 
     @GetMapping("")
     public String[] doA() {
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -20,21 +29,14 @@ public class ReplyController { // 댓글은 보드에 종속되어서 보드에 
 
     }
 
-
     @PostMapping("")
-    public Long add(@RequestBody ReplyDTO replyDTO) {  // @RequestBody json으로 들어오는 데이터를 DTO로 바꿔준다.
+    public int add(@RequestBody ReplyDTO replyDTO) {  // @RequestBody json으로 들어오는 데이터를 DTO로 바꿔준다.
 
-
-        try {
-            Thread.sleep(1000);
-        } catch ( InterruptedException e) {
-            e.printStackTrace();
-        }
 
         log.info("========================");
         log.info(replyDTO);
 
-        return 1L;
+        return replyService.add(replyDTO);
     }
 
     @DeleteMapping("/{rno}")  //리소스는 아이디를 가진다(쿠팡의 특정한 상품의 아이디)./{rno} 댓글 번호를 만든다. 리플라이즈의 100번을 delete 방식으로 호출한다는건  동사 delete를 선택해서 삭제하겠다는것
@@ -47,6 +49,9 @@ public class ReplyController { // 댓글은 보드에 종속되어서 보드에 
         log.info("----------reply remove-------");
 
         log.info("rno: " + rno);
+
+        replyService.remove(rno);
+
         return "success";
     }
 
@@ -58,7 +63,22 @@ public class ReplyController { // 댓글은 보드에 종속되어서 보드에 
         log.info(replyDTO);
 
 
+        replyService.modify(replyDTO);
+
         return "success";
     }
 
+
+    @GetMapping("/list/{bno}") // replies/list/230
+    public List<ReplyDTO> getBoardReplies(@PathVariable(name = "bno") Long bno) {
+
+        //서비스 계층 호출
+        return replyService.getRepliesWithBno(bno);
+
+
+
+
+
+
+    }
 }
