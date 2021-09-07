@@ -26,10 +26,13 @@
         <logger name="java.sql.ResultSet" level="INFO" additivity="false">
             <appender-ref ref="console" />
         </logger>
-        <logger name="org.zerock.fc" level="DEBUG" additivity="false">
+        <logger name="org.zerock" level="DEBUG" additivity="false">
             <appender-ref ref="console" />
         </logger>
-        <root level="info" additivity="false">
+        <logger name="org.springframework.jdbc" level="DEBUG" additivity="false">
+            <appender-ref ref="console" />
+        </logger>
+        <root level="INFO" additivity="false">
             <AppenderRef ref="console"/>
         </root>
 

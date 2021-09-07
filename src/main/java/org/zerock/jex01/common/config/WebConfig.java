@@ -7,6 +7,7 @@ import org.zerock.jex01.board.config.BoardRootConfig;
 import org.zerock.jex01.board.config.BoardServletConfig;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
 
 @Log4j2
@@ -49,5 +50,10 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setInitParameter("throwExceptionIfNoHandlerFound","true");
+
+        MultipartConfigElement multipartConfigElement
+                = new MultipartConfigElement("/Users/cloud/upload/temp", 1024 * 1024*10,  1024 * 1024*20 ,  1024 * 1024*1);
+
+        registration.setMultipartConfig(multipartConfigElement);
     }
 }

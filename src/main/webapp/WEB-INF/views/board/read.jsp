@@ -304,7 +304,7 @@
             // 말풍선 변수
             const rno = target.getAttribute("data-rno")
             const replyer = target.getAttribute("data-replyer")
-            const reply = target.innerHTML // 속성으로 뽑지 않고 우리가 보이는 화면을 reply에 넣는다.
+            const reply = target.innerHTML // 속성으로 뽑지 않고 우리가 보이는 화면을 reply에 넣는다. reply 자체가 innerHTML 속성으로 들어가 있기 때문에.
             console.log(rno, replyer, reply, bno)
             modRno.value = rno
             modReply.value = reply
@@ -313,7 +313,9 @@
 
             //값을 가지고 있는 상태에서 모달창이 뜨게 되는 것
 
-           document.querySelector(".btnRem").setAttribute("data-rno",rno) //romove버튼애 rno값 받아오기 -> 댓글 삭제를 위해 가지고 있는 값. 갖고만 있는 셋팅값
+            //romove버튼애 rno값 받아오기 -> 댓글 삭제를 위해 가지고 있는 값. 갖고만 있는 셋팅값
+            // 없으면 삭제 안됨 ㅎㅎ
+           document.querySelector(".btnRem").setAttribute("data-rno",rno)
 
             modModal.modal('show')
 
