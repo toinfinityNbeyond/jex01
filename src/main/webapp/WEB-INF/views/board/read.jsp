@@ -65,6 +65,21 @@
                             <button type="button" class="btn btn-info btnMod">MODIFY</button>
                         </div>
 
+                        <!--파일이 있는지 확인하고 read에서 첨부파일 조회하는 코드-->
+                        <div>
+                            <c:forEach items="${boardDTO.files}" var="attach">
+                                <div>
+                                    <!--첨부파일 링크를 보여주는 곳-->
+                                    <c:if test="${attach.image}">
+                                        <img onclick="javascript:showOrigin('${attach.getFileLink()}')" src="/viewFile?file=${attach.getThumbnail()}">    <!--attach.getFileLink()이 파라미터로 들어간다.-->
+                                    </c:if>
+                                        ${attach.fileName}
+                                </div>
+                            </c:forEach>
+                        </div>
+
+
+
                     </div>
                     <!-- /.card -->
                     <div class="card direct-chat direct-chat-primary">
@@ -162,6 +177,24 @@
 </div>
 <!-- /.modal -->
 
+<!--원본 사진을 띄워줌-->
+<div class="modal fade" id="modal-image">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="targetImage">
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <%@include file="../includes/footer.jsp"%>
 
 <script>
@@ -183,6 +216,15 @@
 <script src="/resources/js/reply.js"></script>
 
 <script>
+
+    const modalImage = new bootstrap.Modal(document.querySelector('#modal-image')) //jquery를 사용하지 않으려고 new 이 후 부터 복붙
+
+    function showOrigin(fileLink){
+
+        //alert(fileLink);
+        document.querySelector("#targetImage").src = `/viewFile?file=\${fileLink}`
+        modalImage.show()
+    }
 
     function after(result){
         console.log("after............")

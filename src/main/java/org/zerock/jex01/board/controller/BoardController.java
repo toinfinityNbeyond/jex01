@@ -35,7 +35,6 @@ public class BoardController {
     @GetMapping("/register")
     public void registerGet(){ //항상 똑같은 페이지  -> void
         //자동으로 해당하는 jsp로 감
-
     }
 
     @PostMapping("/register")
@@ -43,6 +42,8 @@ public class BoardController {
 
         log.info("boardDTOM           " + boardDTO);
 
+        //Long bno = 111L;
+        //Long bno = boardService.register(boardDTO);
         Long bno = boardService.register(boardDTO);
 
         log.info("==================c              registerPost=========================");
@@ -100,7 +101,18 @@ public class BoardController {
     @PostMapping("/modify")
     public String modify(BoardDTO boardDTO,PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
 
-        log.info("c           modify : " + boardDTO);
+        log.info("---------------------");
+        log.info("---------------------");
+        log.info("---------------------");
+        log.info(boardDTO);
+        if (boardDTO.getFiles().size() > 0) {
+            boardDTO.getFiles().forEach(dto -> log.info(dto));
+        }
+        log.info("---------------------");
+        log.info("---------------------");
+        log.info("---------------------");
+
+
         if (boardService.modify(boardDTO)) {
             redirectAttributes.addFlashAttribute("result", "modified"); //모달 창으로 보여주기 위해서.redirectAttributes 사용해서 일회성으로 함. 다시 돌아가면 모달창이 뜨면 안되기 때문에.
 

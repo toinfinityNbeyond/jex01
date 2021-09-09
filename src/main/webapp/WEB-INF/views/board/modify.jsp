@@ -67,6 +67,7 @@
                                 </div>
                             </div>
                             <!-- /.card-body -->
+                            <div class="temp"></div>
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary btnList">목록</button>
@@ -76,13 +77,35 @@
                         </form>
                     </div>
 
+
+                    <label for="exampleInputFile">File input</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" name="uploadFiles" class="custom-file-input" id="exampleInputFile" multiple>
+                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                        </div>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="uploadBtn">Upload</span>
+                        </div>
+                    </div>
+
+
+                    <div class="uploadResult">
+                        <c:forEach items="${boardDTO.files}" var="attach">
+                            <div data-uuid="${attach.uuid}" data-filename="${attach.fileName}" data-uploadpath="${attach.uploadPath}" data-image="${attach.image}">
+                                <c:if test="${attach.image}">
+                                    <img src="/viewFile?file=${attach.getThumbnail()}">
+                                </c:if>
+                                <span>${attach.fileName}</span>
+                                <button onclick="javascript:removeDiv(this)">x</button> <!--파일의 링크를 찾아서 삭제.Div만 삭제. this는 자기자신을 가르키고 상위인 부모를 찾아서 삭제. 버튼의 상위버전인 Div를 찾아서 삭제 -->
+                            </div>
+                        </c:forEach>
+                    </div>
                     <!-- /.card -->
                 </div>
             </div>
-
-
         </div>
-
+    </section>
 </div>
 <!-- /.content-wrapper -->
 
@@ -131,6 +154,30 @@
         e.preventDefault()
         e.stopPropagation()
 
+        const fileDivArr = uploadResultDiv.querySelectorAll("div")
+
+        if (fileDivArr && fileDivArr.length > 0 ){ //파일 fileDivArr divarr 이 클 떄 기존에 첨부파일 수정을 하나도 안했으면 첨부파일을 새로 추가한게 없어도 등록
+            let str = "";
+            for (let i = 0; i < fileDivArr.length ; i++) {
+                const target = fileDivArr[i]
+                const uuid = target.getAttribute("data-uuid")
+                const fileName = target.getAttribute("data-filename")
+                const uploadPath = target.getAttribute("data-uploadpath")
+                const image = target.getAttribute("data-image")
+
+                str += `<input type='hidden' name='files[\${i}].uuid' value='\${uuid}' >`
+                str += `<input type='hidden' name='files[\${i}].fileName' value='\${fileName}' >`
+                str += `<input type='hidden' name='files[\${i}].uploadPath' value='\${uploadPath}' >`
+                str += `<input type='hidden' name='files[\${i}].image' value='\${image}' >`
+            }
+
+            document.querySelector(".temp").innerHTML = str
+
+
+        } //end if
+
+
+
         form.setAttribute("action","/board/modify")
         form.setAttribute("method","post")
         form.submit()
@@ -139,7 +186,53 @@
 
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+
+    const uploadResultDiv = document.querySelector(".uploadResult")
+
+    document.querySelector("#uploadBtn").addEventListener("click", (e) => {
+
+        const formData = new FormData()
+        const fileInput = document.querySelector("input[name = 'uploadFiles']")
+
+        for (let i =0; i < fileInput.files.length; i++){
+            formData.append("uploadFiles", fileInput.files[i]) //컨트롤에서 받는 이름 . 파라미터 이름. "uploadFiles"이름 중요
+
+        } // 같은 이름으로 여러개를 담는게 핵심
+
+        console.log(formData)   //dir - 속성 값들이 자세히 나옴. 폼 데이터가 어떻게 나오는지.....
+
+        //axios 로 업로드
+        const headerObj = { headers: {'Content-Type' : 'multipart/form-data'}}
+
+        axios.post("/upload", formData, headerObj).then((response) => {
+            const arr = response.data
+            console.log(arr)
+            let str = ""
+            // 루프생성, 스프레드 연산자 이용
+            for(let i = 0; i < arr.length; i ++) {
+                const {uuid,fileName,uploadPath, image, thumbnail, fileLink} = {...arr[i]}
+
+                if (image) {
+                    str += `<div data-uuid='\${uuid}' data-filename='\${fileName}' data-uploadpath='\${uploadPath}' data-image='\${image}'><img src='/viewFile?file=\${thumbnail}'/><span>\${fileName}</span>
+                            <button onclick="javascript:removeDiv(this)" >x</button></div>` // 업로드를 여러번 할 수 있어서 누적. this 는 현재 객체를 의미
+                } else{
+                    str += `<div data-uuid='\${uuid}'data-filename='\${fileName}' data-uploadpath='\${uploadPath}' data-image='\${image}'><a href='/downFile?file=\${fileLink}'>\${fileName}</a></div>`
+                }
+
+            } //end for
+            uploadResultDiv.innerHTML += str
+        })
+
+    },false)
 
 
+    function removeDiv(ele){
+        ele.parentElement.remove()
+    }
+
+</script>
 </body>
 </html>

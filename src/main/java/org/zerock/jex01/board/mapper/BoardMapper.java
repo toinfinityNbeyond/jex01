@@ -2,6 +2,7 @@ package org.zerock.jex01.board.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.zerock.jex01.board.domain.Board;
+import org.zerock.jex01.board.domain.BoardAttach;
 import org.zerock.jex01.board.dto.BoardDTO;
 import org.zerock.jex01.common.dto.PageRequestDTO;
 
@@ -23,13 +24,14 @@ public interface BoardMapper {
 
     int update(Board board);
 
-
     int updateReplyCnt(@Param("bno") Long bno, @Param("num") int num); // 안됨 mybatis는 기본적으로 파라미터 값이 하나만 가능. 댓글이 추가되면 +1 , 삭제되면 -1
     //첫번째 - map , 두번째 DTO 세번째 param 어노테이션을 이용해서 처리
     //동시에 여러 파라미터 전달 가능
 
 
+    int insertAttach(BoardAttach attach);
 
+    int deleteAttach(Long bno);
 
 
 }

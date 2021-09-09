@@ -34,7 +34,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="/board/register" method="post">
+                        <form id="form1" action="/board/register" method="post">
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Title</label>
@@ -55,11 +55,43 @@
                                 </div>
                             </div>
                             <!-- /.card-body -->
+                            <div class="temp"></div>
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
                             </div>
+
+
+
                         </form>
+
+                        <style>
+                            .uploadResult {
+                                display: flex;
+                                justify-content: center;
+                                flex-direction: row;
+                            }
+                        </style>
+
+                        <label for="exampleInputFile">File input</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" name="uploadFiles" class="custom-file-input" id="exampleInputFile" multiple>
+                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="uploadBtn">Upload</span>
+                            </div>
+                        </div>
+
+
+                        <div class="uploadResult">
+
+                        </div>
+
+
+
+
                     </div>
                     <!-- /.card -->
                 </div>
@@ -68,6 +100,97 @@
     </section>
 </div>
 <%@include file="../includes/footer.jsp"%>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<script>
+
+    const uploadResultDiv = document.querySelector(".uploadResult")
+
+    document.querySelector("#uploadBtn").addEventListener("click", (e) => {
+
+        const formData = new FormData()
+        const fileInput = document.querySelector("input[name = 'uploadFiles']")
+
+        for (let i =0; i < fileInput.files.length; i++){
+            formData.append("uploadFiles", fileInput.files[i]) //컨트롤에서 받는 이름 . 파라미터 이름. "uploadFiles"이름 중요
+
+        } // 같은 이름으로 여러개를 담는게 핵심
+
+        console.log(formData)   //dir - 속성 값들이 자세히 나옴. 폼 데이터가 어떻게 나오는지.....
+
+        //axios 로 업로드
+        const headerObj = { headers: {'Content-Type' : 'multipart/form-data'}}
+
+        axios.post("/upload", formData, headerObj).then((response) => {
+            const arr = response.data
+            console.log(arr)
+            let str = ""
+            // 루프생성, 스프레드 연산자 이용
+            for(let i = 0; i < arr.length; i ++) {
+                const {uuid,fileName,uploadPath, image, thumbnail, fileLink} = {...arr[i]}
+
+                if (image) {
+                    str += `<div data-uuid='\${uuid}' data-filename='\${fileName}' data-uploadpath='\${uploadPath}' data-image='\${image}'><img src='/viewFile?file=\${thumbnail}'/><span>\${fileName}</span>
+                            <button onclick="javascript:removeFile('\${fileLink}',this)" >x</button></div>` // 업로드를 여러번 할 수 있어서 누적. this 는 현재 객체를 의미
+                } else{
+                    str += `<div data-uuid='\${uuid}'data-filename='\${fileName}' data-uploadpath='\${uploadPath}' data-image='\${image}'><a href='/downFile?file=\${fileLink}'>\${fileName}</a></div>`
+                }
+
+            } //end for
+            uploadResultDiv.innerHTML += str
+        })
+
+    },false)
+
+    function removeFile(fileLink,ele) {
+        console.log(fileLink)
+        axios.post("/removeFile", {fileName:fileLink}).then(response => {
+            const targetDiv = ele.parentElement
+            targetDiv.remove()
+        })
+    }
+
+    document.querySelector("#submitBtn").addEventListener("click", (e) => {
+        e.stopPropagation()
+        e.preventDefault()
+        //현재 화면에 있는 파일 정보를 hidden 태그들로 변화
+        const form1 = document.querySelector("#form1") //원래 있던 innerHTML에 추가해서 str을 만든다?
+        const fileDivArr = uploadResultDiv.querySelectorAll("div")
+
+        if (!fileDivArr){ //첨부파일이 없으면 바로 등록해줘. 파일 정보 4개가 없으면 등록하면 돼~
+
+            form1.submit()
+
+            return
+        }
+
+        let str = "";
+        for (let i = 0; i < fileDivArr.length ; i++) {
+            const target = fileDivArr[i]
+            const uuid = target.getAttribute("data-uuid")
+            const fileName = target.getAttribute("data-filename")
+            const uploadPath = target.getAttribute("data-uploadpath")
+            const image = target.getAttribute("data-image")
+
+            str += `<input type='hidden' name='files[\${i}].uuid' value='\${uuid}' >`
+            str += `<input type='hidden' name='files[\${i}].fileName' value='\${fileName}' >`
+            str += `<input type='hidden' name='files[\${i}].uploadPath' value='\${uploadPath}' >`
+            str += `<input type='hidden' name='files[\${i}].image' value='\${image}' >`
+        }
+
+            document.querySelector(".temp").innerHTML = str
+            //form1.innerHTML += str
+            form1.submit()
+            //form을 submit
+
+    },false)
+
+
+</script>
 
 </body>
 </html>

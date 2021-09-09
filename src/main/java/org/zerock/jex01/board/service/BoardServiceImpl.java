@@ -26,6 +26,13 @@ public class BoardServiceImpl implements BoardService{
 
         boardMapper.insert(board);
 
+        Long bno = board.getBno();
+
+        board.getAttachList().forEach(attach -> {
+            attach.setBno(bno);
+            boardMapper.insertAttach(attach);
+        });
+
         return board.getBno();
     }
 
@@ -43,7 +50,6 @@ public class BoardServiceImpl implements BoardService{
 
        return  pageResponseDTO;
 
-
     } // 무조건 1이랑 10으로 처리해야해서 세팅을 바꿔놓음
 
     @Override
@@ -58,13 +64,26 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public Boolean remove(Long bno) {
+    public boolean remove(Long bno) {
         return boardMapper.delete(bno) > 0;
     }
 
     @Override
-    public Boolean modify(BoardDTO boardDTO) {
-        return boardMapper.update(boardDTO.getDomain()) > 0; // 0보다 크면 true
+    public boolean modify(BoardDTO boardDTO) {
+
+        boardMapper.deleteAttach(boardDTO.getBno());
+
+        Board board = boardDTO.getDomain();
+
+        Long bno = board.getBno();
+
+        board.getAttachList().forEach(attach -> {
+            attach.setBno(bno);
+            boardMapper.insertAttach(attach);
+        });
+
+        return boardMapper.update(board) > 0; // 0보다 크면 true
         //도메인에 board 값이 있기 때문에 getDomain을 사용
     }
+
 }
