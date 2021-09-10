@@ -10,6 +10,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.jex01.common.config.RootConfig;
 import org.zerock.jex01.security.config.SecurityConfig;
 
+import java.sql.SQLOutput;
+
 @Log4j2
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RootConfig.class, SecurityConfig.class})// 두 개다 로딩해줘야 에러가 안난다
@@ -34,4 +36,56 @@ public class PasswordTests {
 
         log.warn(match);
     }
+
+    @Test
+    public void insertMember(){
+
+        //insert into tbl_member (mid,mpw,mname) values('mid','mpw','mname');
+
+        String qeury = "insert into tbl_member (mid,mpw,mname) values ('v1','v2','v3');";
+
+        for(int i = 0; i < 10; i++) {
+
+            String mid = "user" + i; //user0
+            String mpw = passwordEncoder.encode("pw" + i); // pw0 -> Bcrypted
+            String mname = "유저" + i; //유저0
+
+            String result = qeury;
+
+            result = result.replace("v1" , mid);
+            result = result.replace("v2" , mpw);
+            result = result.replace("v3", mname);
+
+            System.out.println(result);
+        }
+
+    }
+
+
+    @Test
+    public void insertAdmin(){
+
+        //insert into tbl_member (mid,mpw,mname) values('mid','mpw','mname');
+
+        String qeury = "insert into tbl_member (mid,mpw,mname) values ('v1','v2','v3');";
+
+        for(int i = 0; i < 10; i++) {
+
+            String mid = "admin" + i; //user0
+            String mpw = passwordEncoder.encode("pw" + i); // pw0 -> Bcrypted
+            String mname = "관리자" + i; //유저0
+
+            String result = qeury;
+
+            result = result.replace("v1" , mid);
+            result = result.replace("v2" , mpw);
+            result = result.replace("v3", mname);
+
+            System.out.println(result);
+        }
+
+    }
+
+
+
 }
