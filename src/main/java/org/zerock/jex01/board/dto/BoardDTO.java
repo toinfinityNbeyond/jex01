@@ -20,7 +20,7 @@ import java.util.List;
 
 // BoardDTO 에는 빌더로 바꿔주는 기능이 있는데 이제는 도메인으로 바꿔주는 기능을 준다.
 // 단순한 객체였는데 이제는 객체안에 객체가 있다.
-public class BoardDTO {
+public class BoardDTO { // DTO 화면
 //mapper에는 board 타입이어야한다.
 //Controller에서는 이 형식으로 수집한다. -> mapper에서 수집하려면 VO형식으로 바꿔줘야함
     private Long bno;

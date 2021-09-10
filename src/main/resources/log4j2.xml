@@ -11,7 +11,7 @@
 
     <loggers>
 
-        <logger name="jdbc.sqltiming" level="INFO" additivity="false">
+        <logger name="jdbc.sqltiming" level="WARN" additivity="false">
             <appender-ref ref="console" />
         </logger>
         <logger name="java.sql.Connection" level="DEBUG" additivity="false">
@@ -23,7 +23,7 @@
         <logger name="java.sql.PreparedStatement" level="DEBUG" additivity="false">
             <appender-ref ref="console" />
         </logger>
-        <logger name="java.sql.ResultSet" level="INFO" additivity="false">
+        <logger name="java.sql.ResultSet" level="WARN" additivity="false">
             <appender-ref ref="console" />
         </logger>
         <logger name="org.zerock" level="DEBUG" additivity="false">
@@ -32,7 +32,7 @@
         <logger name="org.springframework.jdbc" level="DEBUG" additivity="false">
             <appender-ref ref="console" />
         </logger>
-        <root level="INFO" additivity="false">
+        <root level="WARN" additivity="false">
             <AppenderRef ref="console"/>
         </root>
 

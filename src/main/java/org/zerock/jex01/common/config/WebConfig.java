@@ -5,6 +5,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.zerock.jex01.board.config.BoardRootConfig;
 import org.zerock.jex01.board.config.BoardServletConfig;
+import org.zerock.jex01.security.config.SecurityConfig;
+import org.zerock.jex01.security.config.SecurityServletConfig;
 
 import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
@@ -19,7 +21,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
         log.info("1-----------------------");
         log.info("1-----------------------");
 
-        return new Class[]{RootConfig.class};
+        return new Class[]{RootConfig.class , SecurityConfig.class};
     }
 
     @Override
@@ -28,7 +30,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
         log.info("2-----------------------");
         log.info("2-----------------------");//정상적으로 설정이 완료되면 로그가 찍히는 것.
 
-        return new Class[]{ServletConfig.class};
+        return new Class[]{ServletConfig.class , SecurityServletConfig.class};
     }
 
     @Override
