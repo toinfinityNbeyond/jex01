@@ -1,4 +1,4 @@
-package org.zerock.jex01.security;
+package org.zerock.jex01.board.security;
 
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zerock.jex01.common.config.RootConfig;
 import org.zerock.jex01.security.config.SecurityConfig;
 
-import java.sql.SQLOutput;
 
 @Log4j2
 @ExtendWith(SpringExtension.class)
@@ -30,12 +29,15 @@ public class PasswordTests {
 
     @Test
     public void testDecode() {
+                      //로그에 찍힌 값을 복사해옴
         String str = "$2a$10$S9IWhMaX06oWxWk4BlKL5ObyCarNkSSNpwC7x57aafbatyNl3W8Nm";
 
-        boolean match = passwordEncoder.matches("member1" , str);
+        boolean match = passwordEncoder.matches("member1" , str); // member1 의 패스워드 값과 str이랑 같은지 확인
 
-        log.warn(match);
-    }
+        log.warn(match + ".====================================아 졸려");
+    } // 테스트를 통해 사용자의 패스워드랑 맞는지 확인?
+     // SecurityConfig 메서드에 값을 준 member1의 값과 str의 값이 같이 때문에 테스트 결과는 true
+     // 둘 중 하나 다른 값을 주면 false가 나온다
 
     @Test
     public void insertMember(){
@@ -85,7 +87,5 @@ public class PasswordTests {
         }
 
     }
-
-
 
 }
