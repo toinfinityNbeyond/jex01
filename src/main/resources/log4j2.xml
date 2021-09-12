@@ -30,6 +30,8 @@
             <appender-ref ref="console" />
         </logger>
                                             <!--TRACE 로 거는 이유 -> 로그가 많이 찍힌다.-->
+        <!--로그에 찍히는 숫자는 스프링이 가지고 있는 필더의 개수-> 내부적으로 필터가 15개 있는것-->
+        <!--필터가 동작하면서 시큐리티 설정을 잡아주는 것. 나중에 필터들을 커스더마이징 할 수 있게 된다.-->
         <logger name="org.springframework.security" level="TRACE" additivity="false">
             <appender-ref ref="console" />
         </logger>
