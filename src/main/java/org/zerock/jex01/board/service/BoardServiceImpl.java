@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Log4j2
-@RequiredArgsConstructor
+@RequiredArgsConstructor //@NonNull 이나 final이 붙은 변수에 대한 생성자를 만들어준다.
 public class BoardServiceImpl implements BoardService{
 
     private final BoardMapper boardMapper; // 자동으로 주입해줌

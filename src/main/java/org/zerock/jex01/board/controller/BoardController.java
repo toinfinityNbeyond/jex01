@@ -16,9 +16,9 @@ import org.zerock.jex01.common.dto.PageMaker;
 import org.zerock.jex01.common.dto.PageRequestDTO;
 
 @Controller
-@RequestMapping("/board/*") //getMapping + postMapping
+@RequestMapping("/board/*") //getMapping + postMapping. 경로를 지정했을 때 다음과 같은 URL은 모두 Controller에서 처리.
 @Log4j2
-@RequiredArgsConstructor
+@RequiredArgsConstructor // @NonNull 이나 final이 붙은 변수에 대한 생성자를 만들어준다.
 public class BoardController {
 
     private final TimeService timeService; //autowired대신 final-> 인터페이스만 바라보게
