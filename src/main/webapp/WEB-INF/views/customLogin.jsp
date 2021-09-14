@@ -41,13 +41,13 @@
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
-                    </div>
+                    </div>                    <!-- _로 시작하는 경우는 고정된 값. 시스템이 알아서 하니 손 대지 마라 -->
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                 </div>
                 <div class="row">
                     <div class="col-8">
                         <div class="icheck-primary">
-                            <input type="checkbox" id="remember">
+                            <input type="checkbox" id="remember" name="remember-me">
                             <label for="remember">
                                 Remember Me
                             </label>
