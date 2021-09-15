@@ -2,6 +2,7 @@ package org.zerock.jex01.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.jex01.board.dto.ReplyDTO;
 import org.zerock.jex01.board.service.ReplyService;
@@ -29,6 +30,7 @@ public class ReplyController { // 댓글은 보드에 종속되어서 보드에 
 
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("")
     public int add(@RequestBody ReplyDTO replyDTO) {  // @RequestBody json으로 들어오는 데이터를 DTO로 바꿔준다.
 

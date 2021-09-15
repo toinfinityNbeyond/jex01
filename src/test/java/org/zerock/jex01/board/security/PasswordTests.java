@@ -21,7 +21,7 @@ public class PasswordTests {
    @Autowired
    PasswordEncoder passwordEncoder;
 
-   @Autowired(required = false)
+   @Autowired(required = false) //@Autowired 안에 required = false 를 사용하면 오류가 나지 않는다.
     MemberMapper memberMapper;
 
 
@@ -85,7 +85,7 @@ public class PasswordTests {
 
         //insert into tbl_member (mid,mpw,mname) values('mid','mpw','mname');
 
-        String qeury = "insert into tbl_member (mid,mpw,mname) values ('v1','v2','v3');";
+        String query = "insert into tbl_member (mid,mpw,mname) values ('v1','v2','v3');";
 
         for(int i = 0; i < 10; i++) {
 
@@ -93,7 +93,7 @@ public class PasswordTests {
             String mpw = passwordEncoder.encode("pw" + i); // pw0 -> Bcrypted
             String mname = "관리자" + i; //유저0
 
-            String result = qeury;
+            String result = query;
 
             result = result.replace("v1" , mid);
             result = result.replace("v2" , mpw);
@@ -118,7 +118,7 @@ public class PasswordTests {
 
 
     @Test
-    public void insertAdminRole(){
+    public void insertAdminRole(){  //role 테이블 계정을 MEMBER, ADMIN 두개를 줘야함
 
         String sql = "insert into tbl_member_role (mid, role) values ('%s' , '%s');";
 

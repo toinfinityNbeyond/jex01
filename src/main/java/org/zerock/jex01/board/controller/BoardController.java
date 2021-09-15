@@ -2,6 +2,7 @@ package org.zerock.jex01.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class BoardController {
         model.addAttribute("time", timeService.getNow());
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/register")
     public void registerGet(){ //항상 똑같은 페이지  -> void
         //자동으로 해당하는 jsp로 감
@@ -74,6 +76,7 @@ public class BoardController {
         //model.addAttribute("pageMaker", new PageMaker(pageRequestDTO.getPage();,size,total));  이런식으로 줄이는것도 가능
     }  // 페이지와 사이즈를 파라미터로 던진다.
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = {"/read","/modify", "/read2"})
     public void read(Long bno, PageRequestDTO pageRequestDTO,Model model) {  //자동으로 모델에 전달. PageRequestDTO를 파라미터로 사용하지 않으면 개별 값을 다 파라미터로 선언해야함;;
         log.info("c   read" +  bno );
@@ -98,6 +101,7 @@ public class BoardController {
 
     }
 
+    @PreAuthorize("principal.mid == #boardDTO.writer")
     @PostMapping("/modify")
     public String modify(BoardDTO boardDTO,PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
 

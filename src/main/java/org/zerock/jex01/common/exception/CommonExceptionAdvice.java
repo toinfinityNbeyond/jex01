@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-@ControllerAdvice
+//@ControllerAdvice
 @Log4j2
 public class CommonExceptionAdvice {
 //코드문제 -> 500 / 서버(URL)쪽 문제 -> 404 : web.xml(=webConfig)확인

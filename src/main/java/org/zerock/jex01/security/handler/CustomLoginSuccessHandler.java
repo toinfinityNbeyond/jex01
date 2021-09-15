@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Log4j2
-public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
+public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler { // 이해관계자가 로그인을 했을 때 서로 다른 페이지를 볼 수 있게 해준다
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.warn("-----------CustomLoginSuccessHandler-------------");
