@@ -13,6 +13,7 @@ import java.io.IOException;
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
+    // AuthenticationException 인증에러가 파라미터로 들어간다
     public void commence(HttpServletRequest req, HttpServletResponse res, AuthenticationException authException) throws IOException, ServletException {
 
         log.error("------------------CustomAuthenticationEntryPoint-----------------");
@@ -24,7 +25,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         if(req.getContentType() != null && req.getContentType().contains("json")){
             res.setContentType("application/json;charset=UTF-8");
             res.setStatus(403);
-            res.getWriter().write("{\'msg\':\'REST API ERROR\'}");
+            res.getWriter().write("{\'msg\':\'REST API ERROR\'}"); // 댓글을 추가하면 이 메시지가 날아가게 된다.
         }else {
 
             res.sendRedirect("/customLogin?erzzzzzzs");
