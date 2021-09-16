@@ -7,6 +7,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @Configuration
 @ComponentScan(basePackages = {"org.zerock.jex01.security.controller"})
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)  //안전하게 어노테이션을 걸어준다
 public class SecurityServletConfig {
 }

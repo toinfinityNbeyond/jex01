@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 
-public class MemberDTO extends User {
+public class MemberDTO extends User { //1.User라는 클래스를 상속을 해서 만든다   -> 이렇게 만들거야~~
+                                      //2.UserDetails를 가지고 인터페이스 구현
 
     private String mid;
     private String mpw;
