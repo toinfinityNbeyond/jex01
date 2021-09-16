@@ -14,7 +14,7 @@
 </head>
 <body>
     <h1>DO ADMIN</h1>
-
+    <!--사용자의 권한을 주고 싶으면 principal을 사용-->
     <h2><sec:authentication property="principal"></sec:authentication></h2>
     <h2><sec:authentication property="principal.mname"></sec:authentication></h2>
     <h2><sec:authentication property="principal.mid"></sec:authentication></h2>

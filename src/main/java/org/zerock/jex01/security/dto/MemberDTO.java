@@ -27,10 +27,10 @@ public class MemberDTO extends User { //1.User라는 클래스를 상속을 해�
     public MemberDTO(Member member){
         super(member.getMid(),
                 member.getMpw(),
-                member.getRoleList().stream()
-                        .map(memberRole -> new SimpleGrantedAuthority(memberRole.getRole())).collect(Collectors.toList()));
+                member.getRoleList().stream()                                               //권한 정보
+                        .map(memberRole -> new SimpleGrantedAuthority(memberRole.getRole())).collect(Collectors.toList())); //memberRole을 GrantedAuthority으로 바꿔줘야함
 
-
+        // 멤버를 넣어주면 멤버DTO가 나가게끔 만든다. 생성자 때문에 타입을 바꿔준다(타입 컨버팅)
         this.mid = member.getMid();
         this.mpw = member.getMpw();
         this.mname = member.getMname();
